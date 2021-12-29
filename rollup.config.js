@@ -30,7 +30,6 @@ export default {
 				replace: [
 					["SQUARE_APP", process.env.SQUARE_APP],
 					["SQUARE_LOCATION", process.env.SQUARE_LOCATION],
-					["ADDRESS", process.env.ADDRESS],
 				],
 			}),
 			dev: !production,
