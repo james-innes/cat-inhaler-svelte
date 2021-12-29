@@ -25,48 +25,7 @@
 		});
 
 		window.ApplePaySession && (apple = await square.applePay(request));
-		card = await square.card({
-			style: {
-				".input-container": {
-					borderColor: "red",
-					borderRadius: "9.6px",
-					borderWidth: "2px",
-				},
-				".input-container.is-focus": {
-					borderColor: "blue",
-				},
-				".input-container.is-error": {
-					borderColor: "orange",
-				},
-				input: {
-					color: "blue",
-					fontFamily: "Helvetica, sans-serif",
-					fontWeight: 500,
-					fontSize: "16px",
-				},
-				"input::placeholder": {
-					color: "black",
-				},
-				"input.is-error": {
-					color: "orange",
-				},
-				"input.is-focus": {
-					color: "blue",
-				},
-				".message-text": {
-					color: "black",
-				},
-				".message-icon": {
-					color: "blue",
-				},
-				".message-text.is-error": {
-					color: "orange",
-				},
-				".message-icon.is-error": {
-					color: "orange",
-				},
-			},
-		});
+		card = await square.card();
 		await card.attach("#card");
 		google = await square.googlePay(request);
 		await google.attach("#google-pay");
@@ -132,14 +91,11 @@
 		<option value={i}>&#215; {i}</option>
 	{/each}
 </select>
-
-<br>
+<br />
 {#if sucess}
 	<blockquote>
 		<p>Your order was proccseed successfully.</p>
 	</blockquote>
-{:else if total < 100}
-	<p>Choose your quantity.</p>
 {:else if window.ApplePaySession}
 	<apple-pay-button on:click={e => pay(e, apple)} />
 {:else}
@@ -148,27 +104,23 @@
 		on:click={e => pay(e, google)}
 		style="width: min-content"
 	/>
-	<details>
-		<summary>Pay by Card</summary>
-		<form on:submit={e => pay(e, card)} style="max-width: 20rem">
-			<div id="card" />
-			<label style="margin-top: 1rem">
-				Mobile Number
-				<input
-					bind:value={phone}
-					type="tel"
-					pattern="[0-9 ]+"
-					autocomplete="tel"
-					placeholder="07000 000 000"
-					required
-				/>
-				<small />
-			</label>
-			<button type="submit">
-				{process ? "Processing ..." : "Pay Now"}
-			</button>
-		</form>
-	</details>
+	<h3>Pay by Card</h3>
+	<form on:submit={e => pay(e, card)} style="max-width: 20rem">
+		<div id="card" />
+		<label for="phone"> Mobile Number</label>
+		<input
+			bind:value={phone}
+			type="tel"
+			id="phone"
+			pattern="[0-9 ]+"
+			autocomplete="tel"
+			placeholder="07000 000 000"
+			required
+		/>
+		<button type="submit">
+			{process ? "Processing ..." : "Pay Now"}
+		</button>
+	</form>
 {/if}
 
 <footer style="text-align: center">
