@@ -3,14 +3,7 @@
 	import { payments } from "@square/web-sdk";
 
 	let card, apple, google, sucess, process, phone;
-
-	$: product = {
-		name: "Cat Inhaler",
-		price: 1000,
-		qty: 0,
-	};
-
-	$: total = product.price * product.qty;
+	const PRICE = 1000;
 
 	$: onMount(async () => {
 		let square = await payments("SQUARE_APP", "SQUARE_LOCATION");
@@ -18,14 +11,52 @@
 			countryCode: "GB",
 			currencyCode: "GBP",
 			requestBillingContact: true,
-			total: {
-				amount: String((total / 100).toFixed(2)),
-				label: "Total",
-			},
+			total: PRICE,
 		});
 
 		window.ApplePaySession && (apple = await square.applePay(request));
-		card = await square.card();
+		card = await square.card({
+			style: {
+				".input-container": {
+					borderColor: "#e5f0f0",
+					borderRadius: "9.6px",
+					borderWidth: "2px",
+				},
+				".input-container.is-focus": {
+					borderColor: "#ff89af",
+				},
+				".input-container.is-error": {
+					borderColor: "orange",
+				},
+				input: {
+					color: "#ff89af",
+					fontFamily: "Helvetica, sans-serif",
+					fontWeight: 500,
+					fontSize: "16px",
+				},
+				"input::placeholder": {
+					color: "black",
+				},
+				"input.is-error": {
+					color: "orange",
+				},
+				"input.is-focus": {
+					color: "#ff89af",
+				},
+				".message-text": {
+					color: "black",
+				},
+				".message-icon": {
+					color: "#ff89af",
+				},
+				".message-text.is-error": {
+					color: "orange",
+				},
+				".message-icon.is-error": {
+					color: "orange",
+				},
+			},
+		});
 		await card.attach("#card");
 		google = await square.googlePay(request);
 		await google.attach("#google-pay");
@@ -54,14 +85,13 @@
 					)
 						.replace(/\s+/g, "")
 						.slice(-10),
-				product,
-				total,
+				product: "Cat Inhaler",
+				total: PRICE,
 			}),
 		});
 
 		if (r.status == 201) {
 			sucess = true;
-			product.qty = 0;
 		} else {
 			process = false;
 			alert("Failed to process order.");
@@ -69,70 +99,152 @@
 	}
 </script>
 
-<h1>Cat Inhaler 🐈</h1>
+<div class="card">
+	<img src="logo.png" alt="Cat Inhaler Logo" id="logo" />
 
-<p>Sold from England. High quantity stuff.</p>
+	<p>
+		Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		Lorem Ipsum has been the industry's standard dummy text ever since the
+		1500s, when an unknown printer took a galley of type and scrambled it to
+		make a type specimen book. It has survived not only five centuries, but also
+		the leap into electronic typesetting, remaining essentially unchanged. It
+		was popularised in the 1960s with the release of Letraset sheets containing
+		Lorem Ipsum passages, and more recently with desktop publishing software
+		like Aldus PageMaker including versions of Lorem Ipsum.
+	</p>
 
-<br />
+	<br />
 
-<div class="gallery">
-	<img src="1.jpg" alt="Cat Inhaler with Cat" />
-	<img src="2.jpg" alt="Cat Inhaler side view" />
-	<img src="3.jpg" alt="Cat Inhaler with diagram" />
-</div>
+	<img src="1.jpg" alt="Cat Inhaler with Cat" class="banner" />
 
-<p style="font-size: 1.5rem">
-	Each: {"£" + product.price / 100}<br />
-	Total: £{(total / 100).toFixed(2)}
-</p>
+	<div class="gallery">
+		<img src="2.jpg" alt="Cat Inhaler side view" />
+		<img src="3.jpg" alt="Cat Inhaler with diagram" />
+	</div>
 
-<select bind:value={product.qty}>
-	{#each Array(6) as _, i}
-		<option value={i}>&#215; {i}</option>
-	{/each}
-</select>
-<br />
-{#if sucess}
-	<blockquote>
-		<p>Your order was proccseed successfully.</p>
-	</blockquote>
-{:else if window.ApplePaySession}
-	<apple-pay-button on:click={e => pay(e, apple)} />
-{:else}
-	<div
-		id="google-pay"
-		on:click={e => pay(e, google)}
-		style="width: min-content"
-	/>
-	<h3>Pay by Card</h3>
-	<form on:submit={e => pay(e, card)} style="max-width: 20rem">
-		<div id="card" />
-		<label for="phone"> Mobile Number</label>
-		<input
-			bind:value={phone}
-			type="tel"
-			id="phone"
-			pattern="[0-9 ]+"
-			autocomplete="tel"
-			placeholder="07000 000 000"
-			required
+	<div id="price">
+		<b>
+			Price {"£" + PRICE / 100}
+		</b>
+		<small>Including delivery</small>
+	</div>
+
+	<br />
+	{#if sucess}
+		<blockquote>
+			<p>Your order was proccseed successfully.</p>
+		</blockquote>
+	{:else if window.ApplePaySession}
+		<apple-pay-button on:click={e => pay(e, apple)} />
+	{:else}
+		<div
+			id="google-pay"
+			on:click={e => pay(e, google)}
+			style="width: min-content"
 		/>
-		<button type="submit">
-			{process ? "Processing ..." : "Pay Now"}
-		</button>
-	</form>
-{/if}
+		<form on:submit={e => pay(e, card)} style="max-width: 20rem">
+			<h3>Pay by Card</h3>
+			<div id="card" />
+			<label for="phone">Email Address</label>
+			<input
+				bind:value={phone}
+				type="email"
+				id="email"
+				autocomplete="email"
+				required
+			/>
+			<small> We will not send you rubbish.</small>
+			<button type="submit">
+				{process ? "Processing ..." : "Pay Now"}
+			</button>
+		</form>
+	{/if}
+</div>
 
 <footer style="text-align: center">
 	All rights reserved Cat Inhalers @2022
 </footer>
 
 <style>
-	.gallery {
-		display: flex;
-	}
 	.gallery img {
-		height: 15rem;
+		margin: 2rem 0;
+		width: 45%;
+	}
+
+	.banner {
+		display: block;
+		border-radius: 0.5rem;
+	}
+
+	form small {
+		margin: 0;
+		display: block;
+	}
+
+	form button {
+		margin-top: 1.5rem;
+		background: #ff89af;
+		color: white;
+		font-weight: bold;
+	}
+
+	form button:hover {
+		background: #cf6e8d;
+	}
+
+	input {
+		border: 2px solid #e5f0f0;
+		background: white;
+		color: black !important;
+	}
+
+	input:focus {
+		border-color: #cf6e8d !important;
+		box-shadow: none !important;
+	}
+
+	* {
+		font-family: "Rubik", sans-serif;
+		color: rgb(68, 111, 116);
+	}
+
+	p {
+		font-size: 17px;
+	}
+
+	#logo {
+		height: 7rem;
+		margin-bottom: 1rem;
+	}
+
+	#price {
+		display: grid;
+		place-items: center;
+		border: 1px solid #e5f0f0;
+		padding: 1rem;
+		border-radius: 1rem;
+		text-align: center;
+	}
+
+	form {
+		border: 1px solid #e5f0f0;
+		border-radius: 1rem;
+		padding: 2rem;
+		max-width: 20rem;
+	}
+
+	form h3 {
+		margin-top: 0;
+	}
+
+	.card {
+		transition: 0.3s ease-out;
+		padding: 3rem;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+		background: white;
+		border-radius: 1rem;
+		display: grid;
+		place-items: center;
 	}
 
 	apple-pay-button {
@@ -140,9 +252,5 @@
 		cursor: pointer;
 		height: 2.5rem;
 		width: 10rem;
-	}
-
-	form {
-		max-width: 20rem;
 	}
 </style>
