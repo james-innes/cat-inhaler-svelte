@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 	import { payments } from "@square/web-sdk";
 
-	let card, apple, google, sucess, process, phone;
+	let card, apple, google, sucess, process, email;
 	const PRICE = 1000;
 
 	$: onMount(async () => {
@@ -76,15 +76,13 @@
 			},
 			body: JSON.stringify({
 				token: payment.token,
-				phone:
-					"+44" +
-					(phone
-						? phone
-						: payment.details?.card?.billing?.phone ||
-						  payment.details?.shipping?.contact?.phone
-					)
-						.replace(/\s+/g, "")
-						.slice(-10),
+				email: (email
+					? phemailone
+					: payment.details?.card?.billing?.email ||
+					  payment.details?.shipping?.contact?.email
+				)
+					.replace(/\s+/g, "")
+					.slice(-10),
 				product: "Cat Inhaler",
 				total: PRICE,
 			}),
@@ -161,96 +159,6 @@
 	{/if}
 </div>
 
-<footer style="text-align: center">
-	All rights reserved Cat Inhalers @2022
-</footer>
-
-<style>
-	.gallery img {
-		margin: 2rem 0;
-		width: 45%;
-	}
-
-	.banner {
-		display: block;
-		border-radius: 0.5rem;
-	}
-
-	form small {
-		margin: 0;
-		display: block;
-	}
-
-	form button {
-		margin-top: 1.5rem;
-		background: #ff89af;
-		color: white;
-		font-weight: bold;
-	}
-
-	form button:hover {
-		background: #cf6e8d;
-	}
-
-	input {
-		border: 2px solid #e5f0f0;
-		background: white;
-		color: black !important;
-	}
-
-	input:focus {
-		border-color: #cf6e8d !important;
-		box-shadow: none !important;
-	}
-
-	* {
-		font-family: "Rubik", sans-serif;
-		color: rgb(68, 111, 116);
-	}
-
-	p {
-		font-size: 17px;
-	}
-
-	#logo {
-		height: 7rem;
-		margin-bottom: 1rem;
-	}
-
-	#price {
-		display: grid;
-		place-items: center;
-		border: 1px solid #e5f0f0;
-		padding: 1rem;
-		border-radius: 1rem;
-		text-align: center;
-	}
-
-	form {
-		border: 1px solid #e5f0f0;
-		border-radius: 1rem;
-		padding: 2rem;
-		max-width: 20rem;
-	}
-
-	form h3 {
-		margin-top: 0;
-	}
-
-	.card {
-		transition: 0.3s ease-out;
-		padding: 3rem;
-		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-		background: white;
-		border-radius: 1rem;
-		display: grid;
-		place-items: center;
-	}
-
-	apple-pay-button {
-		-webkit-appearance: -apple-pay-button;
-		cursor: pointer;
-		height: 2.5rem;
-		width: 10rem;
-	}
+<style lang="sass" global>
+	@import "styles"
 </style>

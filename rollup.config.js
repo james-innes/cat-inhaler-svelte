@@ -23,7 +23,10 @@ export default {
 		svelte({
 			preprocess: sveltePreprocess({
 				sourceMap: !production,
-				defaults: { style: "scss" },
+				defaults: { style: "sass" },
+				sass: {
+					prependData: `@import 'src/styles.scss'`,
+				},
 				postcss: {
 					plugins: [require("autoprefixer")()],
 				},

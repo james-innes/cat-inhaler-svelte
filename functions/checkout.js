@@ -9,7 +9,7 @@ const payments = new Client({
 }).paymentsApi;
 
 exports.handler = async ({ body }) => {
-	const { token, phone, basket, total } = JSON.parse(body);
+	const { token, email, total } = JSON.parse(body);
 
 	return payments
 		.createPayment({
@@ -26,9 +26,9 @@ exports.handler = async ({ body }) => {
 					.db("stores")
 					.collection("order")
 					.insertOne({
-						phone,
 						product,
 						total,
+						email,
 						status: "new",
 					})
 					.then(r => r.insertedId)
