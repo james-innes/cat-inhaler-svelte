@@ -102,14 +102,32 @@
 	<img src="logo.png" alt="Cat Inhaler Logo" id="logo" />
 
 	<p>
-		Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-		Lorem Ipsum has been the industry's standard dummy text ever since the
-		1500s, when an unknown printer took a galley of type and scrambled it to
-		make a type specimen book. It has survived not only five centuries, but also
-		the leap into electronic typesetting, remaining essentially unchanged. It
-		was popularised in the 1960s with the release of Letraset sheets containing
-		Lorem Ipsum passages, and more recently with desktop publishing software
-		like Aldus PageMaker including versions of Lorem Ipsum.
+		Like humans, cats can also suffer from asthma and the same method of
+		treatment using an inhaler is applicable. However, unlike health care
+		options for humans the inhalers and the accompanying adapters and masks for
+		your pet may be limited in choice and not offer good value for money. A
+		popular branded product as an example is the AeroKat which costs from £65
+		with similar products being retailed for as much as £100 on other websites.
+		Frankly, this is ridiculous to pay so much for a bit of plastic but the pet
+		companies know there is not much choice so they can charge what they like.
+		These spacer products often also force you to buy their own asthma cartridge
+		from them by making the connector round. However, with some help from your
+		vet, you can buy the exact same medical product your cat needs from your
+		local pharmacy. In the UK the shape of all inhalers are standardised so our
+		spacer is designed to fit this standard as pictured in the small diagram.
+		The current prescription cost in the UK from the NHS is about £9 to pick up
+		the inhaler. However to administer the inhaler for your cat you need the
+		spacer and mask. A small vent is built into the spacer to allow for the cat
+		to exhale. The mask comes in a small size to fit cats. If you need this for
+		a dog you might be better off with a large mask which we do not currently
+		sell. Some people have also found it cheaper to buy asthma inhaler spacers
+		for babies but you will find that the mask is a little too big and covers
+		the eyes of your cat which can be a traumatising for them and make
+		administrating the tretment regularly a difficult task. We are a small
+		company and can only sell this product in small batches so please understand
+		that it may take up to 1 month for the product to arrive but we hope it to
+		be with you sooner than this. Our contact details are not public but we will
+		contact you by email after you have made your purchase.
 	</p>
 
 	<br />
