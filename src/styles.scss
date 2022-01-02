@@ -71,12 +71,17 @@ form h3 {
 
 .card {
 	transition: 0.3s ease-out;
-	padding: 3rem;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 	background: white;
 	border-radius: 1rem;
 	display: grid;
 	place-items: center;
+	padding: 3rem;
+
+	@media (max-width: 760px) {
+		padding: 2rem;
+		// margin: 1rem 0;
+	}
 }
 
 apple-pay-button {
