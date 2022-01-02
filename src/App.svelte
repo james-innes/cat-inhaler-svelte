@@ -12,6 +12,7 @@
 			currencyCode: "GBP",
 			requestBillingContact: true,
 			total: PRICE,
+			total: { amount: PRICE.toString(), label: "Total", pending: false },
 		});
 
 		window.ApplePaySession && (apple = await square.applePay(request));
@@ -145,7 +146,7 @@
 			<div id="card" />
 			<label for="phone">Email Address</label>
 			<input
-				bind:value={phone}
+				bind:value={email}
 				type="email"
 				id="email"
 				autocomplete="email"
