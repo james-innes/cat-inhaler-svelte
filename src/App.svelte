@@ -130,9 +130,10 @@
 
 	<br />
 	{#if sucess}
-		<blockquote>
-			<p>Your order was proccseed successfully.</p>
-		</blockquote>
+		<p>
+			Your order was proccseed successfully.<br />Within the next few days we
+			will email your a confirmation receipt.<br />Thank you.
+		</p>
 	{:else if window.ApplePaySession}
 		<apple-pay-button on:click={e => pay(e, apple)} />
 	{:else}
