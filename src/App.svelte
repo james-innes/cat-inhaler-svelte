@@ -2,10 +2,20 @@
 	import { onMount } from "svelte";
 	import { payments } from "@square/web-sdk";
 
-	let card, apple, google, sucess, process, email;
+	let card, applePay, googlePay, sucess, process, email, geoRef, address;
 	const PRICE = 1000;
 
-	$: onMount(async () => {
+	onMount(async () => {
+		const autocomplete = new google.maps.places.Autocomplete(geoRef, {
+			types: ["address"],
+			fields: ["formatted_address", "geometry"],
+		});
+
+		autocomplete.addListener(
+			"place_changed",
+			() => (address = autocomplete.getPlace())
+		);
+
 		let square = await payments("SQUARE_APP", "SQUARE_LOCATION");
 		let request = square.paymentRequest({
 			countryCode: "GB",
@@ -15,7 +25,7 @@
 			total: { amount: PRICE.toString(), label: "Total", pending: false },
 		});
 
-		window.ApplePaySession && (apple = await square.applePay(request));
+		window.ApplePaySession && (applePay = await square.applePay(request));
 		card = await square.card({
 			style: {
 				".input-container": {
@@ -59,8 +69,8 @@
 			},
 		});
 		await card.attach("#card");
-		google = await square.googlePay(request);
-		await google.attach("#google-pay");
+		googlePay = await square.googlePay(request);
+		await googlePay.attach("#google-pay");
 	});
 
 	async function pay(e, method) {
@@ -153,24 +163,36 @@
 			will email your a confirmation receipt.<br />Thank you.
 		</p>
 	{:else if window.ApplePaySession}
-		<apple-pay-button on:click={e => pay(e, apple)} />
+		<apple-pay-button on:click={e => pay(e, applePay)} />
 	{:else}
 		<div
 			id="google-pay"
-			on:click={e => pay(e, google)}
+			on:click={e => pay(e, googlePay)}
 			style="width: min-content"
 		/>
 		<form on:submit={e => pay(e, card)} style="max-width: 20rem">
 			<h3>Pay by Card</h3>
+			<label>
+				Delivery Address
+				<input
+					bind:this={geoRef}
+					required
+					placeholder
+					type="search"
+					on:keydown={e => e.key === "Enter" && e.preventDefault()}
+				/>
+			</label>
 			<div id="card" />
-			<label for="phone">Email Address</label>
-			<input
-				bind:value={email}
-				type="email"
-				id="email"
-				autocomplete="email"
-				required
-			/>
+			<label
+				>Email Address
+				<input
+					bind:value={email}
+					type="email"
+					id="email"
+					autocomplete="email"
+					required
+				/>
+			</label>
 			<small> We will not send you rubbish.</small>
 			<button type="submit">
 				{process ? "Processing ..." : "Pay Now"}

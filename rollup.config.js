@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
+import replaceHtmlVars from "rollup-plugin-replace-html-vars";
 import babel from "rollup-plugin-babel";
 import dotenv from "dotenv";
 
@@ -20,6 +21,15 @@ export default {
 		file: "public/build/bundle.js",
 	},
 	plugins: [
+		production &&
+			cleaner({
+				targets: ["./public/build/"],
+			}),
+		replaceHtmlVars({
+			files: "public/index.html",
+			from: ["GOOGLE"],
+			to: [process.env.GOOGLE],
+		}),
 		svelte({
 			preprocess: sveltePreprocess({
 				sourceMap: !production,
